@@ -113,14 +113,14 @@ func (m *Module) Register(app application.Application) error {
 			crud.WithSearchable(),
 		),
 		crud.NewDateTimeField("created_at",
-			crud.WithHidden(),
+			crud.WithReadonly(),
 			crud.WithInitialValue(func() any {
 				return time.Now()
 			}),
 		),
 		crud.NewDateTimeField(
 			"updated_at",
-			crud.WithHidden(),
+			crud.WithReadonly(),
 			crud.WithInitialValue(func() any {
 				return time.Now()
 			}),

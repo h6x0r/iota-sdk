@@ -1320,6 +1320,7 @@ func (c *CrudController[TEntity]) fieldToFormFieldWithValue(ctx context.Context,
 		builder := form.Checkbox(field.Name(), fieldLabel)
 
 		if field.Readonly() {
+			// Use readonly attribute, CSS will handle the visual disabled state
 			builder = builder.Attrs(templ.Attributes{"readonly": true})
 		}
 
@@ -1615,6 +1616,7 @@ func (c *CrudController[TEntity]) handleSelectField(ctx context.Context, selectF
 		}
 
 		if selectField.Readonly() {
+			// Use readonly attribute, CSS will handle the visual disabled state
 			builder = builder.Attrs(templ.Attributes{"readonly": true})
 		}
 
@@ -1636,6 +1638,7 @@ func (c *CrudController[TEntity]) handleSelectField(ctx context.Context, selectF
 			Placeholder(selectField.Placeholder())
 
 		if selectField.Readonly() {
+			// Use readonly attribute, CSS will handle the visual disabled state
 			builder = builder.Attrs(templ.Attributes{"readonly": true})
 		}
 
@@ -1658,6 +1661,7 @@ func (c *CrudController[TEntity]) handleSelectField(ctx context.Context, selectF
 			Multiple(selectField.Multiple())
 
 		if selectField.Readonly() {
+			// Use readonly attribute, CSS will handle the visual disabled state
 			builder = builder.Attrs(templ.Attributes{"readonly": true})
 		}
 

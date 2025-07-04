@@ -2,7 +2,6 @@ package controllers_test
 
 import (
 	"os"
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -102,24 +101,19 @@ func TestReadonlyFieldsCSS(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			assert.True(t, 
-				strings.Contains(cssContent, tc.cssRule), 
-				"%s: %s", tc.description, tc.cssRule,
-			)
+			assert.Contains(t, cssContent, tc.cssRule, tc.description)
 		})
 	}
 
 	// Test that certain combinations exist
 	t.Run("Complete readonly rule set", func(t *testing.T) {
-		assert.True(t,
-			strings.Contains(cssContent, ".form-control-input[readonly] {"),
+		assert.Contains(t, cssContent, ".form-control-input[readonly] {",
 			"Readonly selector not found in CSS")
 	})
 
 	// Test dark mode selector exists (цвет может переопределяться в другом месте)
 	t.Run("Dark mode selector exists", func(t *testing.T) {
-		assert.True(t,
-			strings.Contains(cssContent, ".dark .form-control-input[readonly]"),
+		assert.Contains(t, cssContent, ".dark .form-control-input[readonly]",
 			"Dark mode readonly selector missing")
 	})
 }

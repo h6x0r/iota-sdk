@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Readonly Select Demo</title>
+    <style>
+        /* Стили для readonly селектов */
+        .form-control-input[readonly] {
+            cursor: not-allowed;
+            opacity: 0.7;
+            background-color: #f3f4f6;
+            pointer-events: none;
+        }
+
+        select[disabled] {
+            cursor: not-allowed;
+            opacity: 0.7;
+            background-color: #f3f4f6;
+            pointer-events: none;
+        }
+
+        /* Темная тема */
+        @media (prefers-color-scheme: dark) {
+            .form-control-input[readonly] {
+                background-color: #374151;
+                color: #9ca3af;
+            }
+            
+            select[disabled] {
+                background-color: #374151;
+                color: #9ca3af;
+            }
+        }
+
+        /* Базовые стили */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f9fafb;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .demo-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status.working {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status.broken {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Демонстрация Readonly Селектов</h1>
+
+    <div class="demo-section">
+        <h2>✅ Исправленные компоненты <span class="status working">РАБОТАЕТ</span></h2>
+        
+        <div class="form-group">
+            <label for="status-readonly">Status (Readonly Select)</label>
+            <select id="status-readonly" disabled>
+                <option value="active" selected>Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="deprecated">Deprecated</option>
+            </select>
+            <small>Этот селект имеет атрибут <code>disabled</code> и применены CSS стили</small>
+        </div>
+
+        <div class="form-group">
+            <label for="created-at">Created At (Readonly Input)</label>
+            <input type="datetime-local" id="created-at" value="2024-01-15T10:30" readonly>
+            <small>Это поле имеет атрибут <code>readonly</code></small>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>❌ Компоненты требующие исправления <span class="status broken">НЕ РАБОТАЕТ</span></h2>
+        
+        <div class="form-group">
+            <label for="broken-select">Broken Select (только readonly атрибут)</label>
+            <select id="broken-select" readonly>
+                <option value="option1" selected>Option 1</option>
+                <option value="option2">Option 2</option>
+                <option value="option3">Option 3</option>
+            </select>
+            <small>Этот селект имеет только <code>readonly</code> атрибут - НЕ РАБОТАЕТ в HTML!</small>
+        </div>
+
+        <div class="form-group">
+            <label>Checkbox (нужна конвертация readonly → disabled)</label>
+            <label style="display: flex; align-items: center; gap: 10px;">
+                <input type="checkbox" checked readonly>
+                Readonly checkbox (не работает)
+            </label>
+            <small>Checkbox не поддерживает <code>readonly</code>, нужен <code>disabled</code></small>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>🔧 Решение</h2>
+        <p>Для корректной работы readonly селектов нужно:</p>
+        <ol>
+            <li><strong>В backend:</strong> передавать <code>readonly: true</code> в атрибутах поля</li>
+            <li><strong>В template компонентах:</strong> конвертировать <code>readonly → disabled</code> для select, checkbox, radio</li>
+            <li><strong>В CSS:</strong> стилизовать disabled элементы как readonly (серый фон, заблокированное взаимодействие)</li>
+            <li><strong>В форме:</strong> игнорировать readonly поля при отправке</li>
+        </ol>
+
+        <h3>Код для template компонентов:</h3>
+        <pre><code>// В select.templ
+disabled?={ p.Attrs["readonly"] == true || p.Attrs["disabled"] == true }
+
+// В CSS
+.form-control-input[readonly], select[disabled] {
+    cursor: not-allowed;
+    opacity: 0.7;
+    background-color: #f3f4f6;
+    pointer-events: none;
+}</code></pre>
+    </div>
+
+    <script>
+        // Демонстрация поведения
+        document.addEventListener('DOMContentLoaded', function() {
+            const brokenSelect = document.getElementById('broken-select');
+            const workingSelect = document.getElementById('status-readonly');
+            
+            // Попытка изменить broken select
+            brokenSelect.addEventListener('change', function() {
+                alert('Broken select изменился! Это НЕ должно происходить для readonly полей.');
+            });
+            
+            // Попытка изменить working select
+            workingSelect.addEventListener('change', function() {
+                alert('Working select пытается измениться, но это заблокировано disabled атрибутом.');
+            });
+        });
+    </script>
+</body>
+</html>

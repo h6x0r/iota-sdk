@@ -66,6 +66,7 @@ CREATE TABLE currencies (
     code varchar(3) NOT NULL PRIMARY KEY, -- RUB
     name varchar(255) NOT NULL, -- Russian Ruble
     symbol varchar(3) NOT NULL, -- ₽
+    status varchar(20) NOT NULL DEFAULT 'active', -- active, inactive, deprecated
     created_at timestamp with time zone DEFAULT now(),
     updated_at timestamp with time zone DEFAULT now()
 );

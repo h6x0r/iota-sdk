@@ -33,6 +33,7 @@ type Currency struct {
 	Code      string
 	Name      string
 	Symbol    string
+	Status    string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

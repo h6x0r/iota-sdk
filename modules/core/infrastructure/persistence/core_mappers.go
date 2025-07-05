@@ -250,6 +250,7 @@ func ToDBCurrency(entity *currency.Currency) *models.Currency {
 		Code:      string(entity.Code),
 		Name:      entity.Name,
 		Symbol:    string(entity.Symbol),
+		Status:    entity.Status,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
@@ -265,9 +266,12 @@ func ToDomainCurrency(dbCurrency *models.Currency) (*currency.Currency, error) {
 		return nil, err
 	}
 	return &currency.Currency{
-		Code:   code,
-		Name:   dbCurrency.Name,
-		Symbol: symbol,
+		Code:      code,
+		Name:      dbCurrency.Name,
+		Symbol:    symbol,
+		Status:    dbCurrency.Status,
+		CreatedAt: dbCurrency.CreatedAt,
+		UpdatedAt: dbCurrency.UpdatedAt,
 	}, nil
 }
 

@@ -15,7 +15,7 @@ var (
 )
 
 const (
-	selectCurrenciesQuery = `SELECT code, name, symbol, created_at, updated_at FROM currencies c`
+	selectCurrenciesQuery = `SELECT code, name, symbol, status, created_at, updated_at FROM currencies c`
 )
 
 type GormCurrencyRepository struct {
@@ -54,6 +54,7 @@ func (g *GormCurrencyRepository) queryChats(
 			&currency.Code,
 			&currency.Name,
 			&currency.Symbol,
+			&currency.Status,
 			&currency.CreatedAt,
 			&currency.UpdatedAt,
 		); err != nil {
@@ -132,8 +133,8 @@ func (g *GormCurrencyRepository) Create(ctx context.Context, entity *currency.Cu
 	}
 	row := ToDBCurrency(entity)
 	if _, err := tx.Exec(ctx, `
-		INSERT INTO currencies (code, name, symbol) VALUES ($1, $2, $3)
-	`, row.Code, row.Name, row.Symbol); err != nil {
+		INSERT INTO currencies (code, name, symbol, status) VALUES ($1, $2, $3, $4)
+	`, row.Code, row.Name, row.Symbol, row.Status); err != nil {
 		return err
 	}
 	return nil
@@ -147,9 +148,9 @@ func (g *GormCurrencyRepository) Update(ctx context.Context, entity *currency.Cu
 	row := ToDBCurrency(entity)
 	if _, err := tx.Exec(ctx, `
 		UPDATE currencies
-		SET name = $1, symbol = $2
-		WHERE code = $3
-	`, row.Name, row.Symbol, row.Code); err != nil {
+		SET name = $1, symbol = $2, status = $3
+		WHERE code = $4
+	`, row.Name, row.Symbol, row.Status, row.Code); err != nil {
 		return err
 	}
 	return nil

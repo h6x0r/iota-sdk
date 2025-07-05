@@ -11,6 +11,7 @@ type Currency struct {
 	Code      Code
 	Name      string
 	Symbol    Symbol
+	Status    string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -19,12 +20,14 @@ type CreateDTO struct {
 	Code   string `validate:"required"`
 	Name   string `validate:"required"`
 	Symbol string `validate:"required"`
+	Status string
 }
 
 type UpdateDTO struct {
 	Code   string `validate:"len=3"`
 	Name   string
 	Symbol string
+	Status string
 }
 
 func (p *CreateDTO) Ok(l ut.Translator) (map[string]string, bool) {
@@ -52,6 +55,7 @@ func (p *CreateDTO) ToEntity() (*Currency, error) {
 		Code:   c,
 		Name:   p.Name,
 		Symbol: s,
+		Status: p.Status,
 	}, nil
 }
 
@@ -92,5 +96,6 @@ func (p *UpdateDTO) ToEntity() (*Currency, error) {
 		Code:   c,
 		Name:   p.Name,
 		Symbol: s,
+		Status: p.Status,
 	}, nil
 }

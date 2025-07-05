@@ -112,6 +112,18 @@ func (m *Module) Register(app application.Application) error {
 			crud.WithMaxLen(3),
 			crud.WithSearchable(),
 		),
+		crud.NewSelectField("status",
+			crud.WithReadonly(),
+			crud.WithInitialValue(func() any {
+				return "active"
+			}),
+		).
+			WithStaticOptions(
+				crud.SelectOption{Value: "active", Label: "Active"},
+				crud.SelectOption{Value: "inactive", Label: "Inactive"},
+				crud.SelectOption{Value: "deprecated", Label: "Deprecated"},
+			).
+			SetPlaceholder("Select status"),
 		crud.NewDateTimeField("created_at",
 			crud.WithReadonly(),
 			crud.WithInitialValue(func() any {

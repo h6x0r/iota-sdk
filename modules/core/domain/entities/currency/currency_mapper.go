@@ -40,6 +40,12 @@ func (m *currencyMapper) ToEntities(_ context.Context, values ...[]crud.FieldVal
 					return result, err
 				}
 				entity.Symbol = Symbol(symbol)
+			case "status":
+				status, err := v.AsString()
+				if err != nil {
+					return result, err
+				}
+				entity.Status = status
 			case "created_at":
 				createdAt, err := v.AsTime()
 				if err != nil {
@@ -69,6 +75,7 @@ func (m *currencyMapper) ToFieldValuesList(_ context.Context, entities ...Curren
 				"code":       string(entity.Code),
 				"name":       entity.Name,
 				"symbol":     string(entity.Symbol),
+				"status":     entity.Status,
 				"created_at": entity.CreatedAt,
 				"updated_at": entity.UpdatedAt,
 			},

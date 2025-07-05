@@ -1703,10 +1703,10 @@ func (c *CrudController[TEntity]) convertValueToString(value any, fieldType crud
 		}
 	case crud.FloatFieldType:
 		switch v := value.(type) {
-		case float64:
-			return strconv.FormatFloat(v, 'f', -1, 64)
 		case float32:
 			return strconv.FormatFloat(float64(v), 'f', -1, 32)
+		case float64:
+			return strconv.FormatFloat(v, 'f', -1, 64)
 		}
 	case crud.StringFieldType, crud.DecimalFieldType, crud.UUIDFieldType:
 		return fmt.Sprintf("%v", value)

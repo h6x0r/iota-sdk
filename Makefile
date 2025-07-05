@@ -97,4 +97,7 @@ tunnel:
 %:
 	@:
 
-.PHONY: default deps test test-watch localdb clear-localdb reset-localdb migrate-up migrate-down dev css-watch css lint release release-local clean setup run-iota-linter clean-iota-linter collect-migrations docs seed
+debug:
+	air -c .air.debug.toml
+
+.PHONY: default deps test test-watch localdb clear-localdb reset-localdb migrate-up migrate-down dev css-watch css lint release release-local clean setup run-iota-linter clean-iota-linter collect-migrations docs seed debug

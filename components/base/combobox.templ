@@ -29,6 +29,7 @@ type ComboboxProps struct {
 	Searchable   bool
 	NotFoundText string
 	Trigger      *Trigger
+	Disabled     bool
 }
 
 type ComboboxOption struct {
@@ -91,6 +92,7 @@ templ Combobox(props ComboboxProps) {
 			:id="$id('combobox')"
 			multiple?={ props.Multiple }
 			name={ props.Name }
+			disabled?={ props.Disabled }
 			if props.Form != "" {
 				form={ props.Form }
 			}
@@ -153,6 +155,7 @@ templ Combobox(props ComboboxProps) {
 						"x-on:keydown.enter.prevent": "setValue(activeValue)",
 						"autocomplete":               "off",
 						"x-ref":                      "input",
+						"disabled":                   props.Disabled,
 					},
 					AddonRight: &input.Addon{
 						Component: DropdownIndicator(),
@@ -167,6 +170,7 @@ templ Combobox(props ComboboxProps) {
 					x-on:keydown.space.prevent="openedWithKeyboard = true"
 					x-ref="trigger"
 					type="button"
+					disabled?={ props.Disabled }
 				>
 					if props.Multiple {
 						<div x-show="selectedValues.size">
